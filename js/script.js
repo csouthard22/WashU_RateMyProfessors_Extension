@@ -1,3 +1,6 @@
+//Functional Ver 1
+//Fetch ratings without displaying 
+
 $(document).ready(function(){
 
   $(document).on('mouseenter','a.instructorLink', function(){
