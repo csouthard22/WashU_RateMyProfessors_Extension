@@ -18,7 +18,7 @@
         "default_popup": "popup.html"
     },
     "background": {
-        "service_worker": "js/background.js",
+        "service_worker": "background.js",
         "type": "module" 
     },
     "icons": {
@@ -40,8 +40,8 @@
             ],
             "js": [
               "js/jquery-3.6.0.min.js",
-              "js/bootstrap.min.js",
-              "js/tasks.js"
+              
+              "js/script.js"
 
             ],
             "run_at": "document_end"

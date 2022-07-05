@@ -3,14 +3,14 @@
 
 $(document).ready(function(){
 
-  $(document).one('mouseenter','a.instructorLink',function(){
+  // $(document).one('mouseenter','a.instructorLink',function(){
 
-    $('a.instructorLink').each(function(index){
-      var wrapper = "<b>Loading...</b>";
-      $(this).after(wrapper);
-    })
+  //   $('a.instructorLink').each(function(index){
+  //     var wrapper = "<b>Loading...</b>";
+  //     $(this).after(wrapper);
+  //   })
 
-  })
+  // })
 
 
   $(document).on('mouseenter','a.instructorLink', function(){
