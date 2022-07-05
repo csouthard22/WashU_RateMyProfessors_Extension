@@ -3,24 +3,35 @@
 
 $(document).ready(function(){
 
+  $(document).one('mouseenter','a.instructorLink',function(){
+
+    $('a.instructorLink').each(function(index){
+      var wrapper = "<b>Loading...</b>";
+      $(this).after(wrapper);
+    })
+
+  })
+
+
   $(document).on('mouseenter','a.instructorLink', function(){
     var instructorURL = $(this).attr("href");
 
+
     fetch(instructorURL)
-          .then(response => response.text())
-          .then(responseText => {
-            let start = '<span id="oInstructorResults_lblInstructorName">';
-            let result = responseText.substring(responseText.indexOf(start) + start.length , responseText.indexOf('</span></strong>') - 1);
-            let name = result.replace(/\s+/g, ' ');
-            
-            var url = "http://www.ratemyprofessors.com/search/teachers?query="+name+"&sid=U2Nob29sLTExNDc=";
-            chrome.runtime.sendMessage(
-              {from:"tasks",message:url}
-            );
+      .then(response => response.text())
+      .then(responseText => {
+        let start = '<span id="oInstructorResults_lblInstructorName">';
+        let result = responseText.substring(responseText.indexOf(start) + start.length , responseText.indexOf('</span></strong>') - 1);
+        let name = result.replace(/\s+/g, ' ');
+        
+        var url = "http://www.ratemyprofessors.com/search/teachers?query="+name+"&sid=U2Nob29sLTExNDc=";
+        chrome.runtime.sendMessage(
+          {from:"tasks",message:url}
+        );
 
-          })
+      })
 
- 
+
 
   });
 
