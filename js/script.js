@@ -27,7 +27,7 @@ $(document).ready(function(){
 
   chrome.runtime.onMessage.addListener(function (response, sendResponse) {
     let kw = "window.__RELAY_STORE__ = ";
-    let result = response.substring(response.indexOf(kw) + kw.length , response.indexOf('window.process = {}') - 1);
+    let result = response.message.substring(response.message.indexOf(kw) + kw.length , response.message.indexOf('window.process = {}') - 1);
     result = result.replace(/;\s*$/, ""); //remove last ;
     var jsonResult = JSON.parse(result)
     console.log(jsonResult)
