@@ -57,10 +57,18 @@ $(document).ready(function(){
     try {
       var jsonResp = values[4]
       
-      console.log(jsonResp.avgRating);
-      console.log(id);
-      //var searchId = '[href=' + id +']';
-      $("[href='"+id+"']").after(jsonResp.avgRating);
+      if(jsonResp.school.__ref == "U2Nob29sLTExNDc="){
+        console.log(jsonResp.avgRating);
+        console.log(id);
+        
+        $("[href='"+id+"']").after(jsonResp.avgRating+"/5");
+      }
+      else{
+        console.log("Not a WashU Professor");
+        $("[href='"+id+"']").after("<b>No Rating Found</b>");
+      }
+
+      
       
 
     } catch (error) {
