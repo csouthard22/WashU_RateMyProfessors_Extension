@@ -59,6 +59,8 @@ $(document).ready(function(){
       
       console.log(jsonResp.avgRating);
       console.log(id);
+      //var searchId = '[href=' + id +']';
+      $("[href='"+id+"']").after(jsonResp.avgRating);
       
 
     } catch (error) {
