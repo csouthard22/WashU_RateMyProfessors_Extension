@@ -13,6 +13,8 @@ $(document).ready(function(){
   // })
 
 
+
+
   $(document).on('mouseenter','a.instructorLink', function(){
     var instructorURL = $(this).attr("href");
 
@@ -26,7 +28,7 @@ $(document).ready(function(){
         
         var url = "http://www.ratemyprofessors.com/search/teachers?query="+name+"&sid=U2Nob29sLTExNDc=";
         chrome.runtime.sendMessage(
-          {from:"tasks",message:url}
+          {from:"tasks",message:url,id:instructorURL}
         );
 
       })
@@ -37,11 +39,12 @@ $(document).ready(function(){
 
 
   chrome.runtime.onMessage.addListener(function (response, sendResponse) {
+    var id = response.id;
+
     let kw = "window.__RELAY_STORE__ = ";
-    let result = response.substring(response.indexOf(kw) + kw.length , response.indexOf('window.process = {}') - 1);
+    let result = response.message.substring(response.message.indexOf(kw) + kw.length , response.message.indexOf('window.process = {}') - 1);
     result = result.replace(/;\s*$/, ""); //remove last ;
     var jsonResult = JSON.parse(result)
-    console.log(jsonResult)
     var keys = []
     var values = []
     for (var key in jsonResult) {
@@ -55,6 +58,7 @@ $(document).ready(function(){
       var jsonResp = values[4]
       
       console.log(jsonResp.avgRating);
+      console.log(id);
       
 
     } catch (error) {

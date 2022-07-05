@@ -4,7 +4,7 @@ chrome.runtime.onMessage.addListener(
             .then(response => response.text())
             .then(responseText => onSuccess(
               //send message back to tasks.js with html content
-              chrome.tabs.sendMessage(sender.tab.id, responseText)
+              chrome.tabs.sendMessage(sender.tab.id, {message:responseText,id:message.id})
   
             ))
             
