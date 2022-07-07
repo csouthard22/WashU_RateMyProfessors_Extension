@@ -1,8 +1,12 @@
 //Functional Ver 2
 //Fetch ratings with displaying but no hover 
 
+
+
 $(document).ready(function(){
 
+
+  //Append rating container for each professor
   $(document).one('mouseenter','a.instructorLink',function(){
 
     $('a.instructorLink').each(function(index){
@@ -15,12 +19,14 @@ $(document).ready(function(){
 
 
 
-
+  //Show rating container and fetch rating from RateMyProfessor
   $(document).on('mouseenter','a.instructorLink', function(){
 
     $(this).next().show();
 
     if($(this).next().text()=="Loading..."){
+      
+      //get Professors' full names by fetching their link 
       var instructorURL = $(this).attr("href");
       fetch(instructorURL)
       .then(response => response.text())
@@ -29,6 +35,7 @@ $(document).ready(function(){
         let result = responseText.substring(responseText.indexOf(start) + start.length , responseText.indexOf('</span></strong>') - 1);
         let name = result.replace(/\s+/g, ' ');
         
+        //send search query link to the background 
         var url = "http://www.ratemyprofessors.com/search/teachers?query="+name+"&sid=U2Nob29sLTExNDc=";
         chrome.runtime.sendMessage(
           {from:"tasks",message:url,id:instructorURL}
@@ -46,12 +53,14 @@ $(document).ready(function(){
   });
 
 
+  //Upon message, replace rating contain's text with fetched rating
   chrome.runtime.onMessage.addListener(function (response, sendResponse) {
     var id = response.id;
 
+    //parse and extract professor info from fetched source codes
     let kw = "window.__RELAY_STORE__ = ";
     let result = response.message.substring(response.message.indexOf(kw) + kw.length , response.message.indexOf('window.process = {}') - 1);
-    result = result.replace(/;\s*$/, ""); //remove last ;
+    result = result.replace(/;\s*$/, ""); 
     var jsonResult = JSON.parse(result)
     var keys = []
     var values = []
@@ -62,6 +71,7 @@ $(document).ready(function(){
         }
     }
 
+    //Change rating container text to ratings 
     try {
       var jsonResp = values[4]
       
