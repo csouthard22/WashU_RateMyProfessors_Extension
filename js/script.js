@@ -19,39 +19,47 @@ $(document).ready(function(){
 
 
 
-  //Show rating container and fetch rating from RateMyProfessor
-  $(document).on('mouseenter','a.instructorLink', function(){
+  //Show rating container and fetch rating when hover above professor link
+  $(document).on({
 
-    $(this).next().show();
-
-    if($(this).next().text()=="Loading..."){
+    mouseenter:function(){
       
-      //get Professors' full names by fetching their link 
-      var instructorURL = $(this).attr("href");
-      fetch(instructorURL)
-      .then(response => response.text())
-      .then(responseText => {
-        let start = '<span id="oInstructorResults_lblInstructorName">';
-        let result = responseText.substring(responseText.indexOf(start) + start.length , responseText.indexOf('</span></strong>') - 1);
-        let name = result.replace(/\s+/g, ' ');
+      $(this).next().show();
+
+      if($(this).next().text()=="Loading..."){
         
-        //send search query link to the background 
-        var url = "http://www.ratemyprofessors.com/search/teachers?query="+name+"&sid=U2Nob29sLTExNDc=";
-        chrome.runtime.sendMessage(
-          {from:"tasks",message:url,id:instructorURL}
-        );
+        //get Professors' full names by fetching their link 
+        var instructorURL = $(this).attr("href");
+        fetch(instructorURL)
+        .then(response => response.text())
+        .then(responseText => {
+          let start = '<span id="oInstructorResults_lblInstructorName">';
+          let result = responseText.substring(responseText.indexOf(start) + start.length , responseText.indexOf('</span></strong>') - 1);
+          let name = result.replace(/\s+/g, ' ');
+          
+          //send search query link to the background 
+          var url = "http://www.ratemyprofessors.com/search/teachers?query="+name+"&sid=U2Nob29sLTExNDc=";
+          chrome.runtime.sendMessage(
+            {from:"tasks",message:url,id:instructorURL}
+          );
 
-      })
-      console.log("Fetching!");
+        })
+        console.log("Fetching!");
 
+      }
+    },
+
+    mouseleave:function(){
+      $(this).next().hide();
     }
+  },
+  'a.instructorLink');
+    
+    
 
     
 
-
-
-  });
-
+  
 
   //Upon message, replace rating contain's text with fetched rating
   chrome.runtime.onMessage.addListener(function (response, sendResponse) {
