@@ -8,6 +8,7 @@ $(document).ready(function(){
     $('a.instructorLink').each(function(index){
       var wrapper = "<b style='display:none'>Loading...</b>";
       $(this).after(wrapper);
+      
     })
 
   })
@@ -19,10 +20,9 @@ $(document).ready(function(){
 
     $(this).next().show();
 
-    var instructorURL = $(this).attr("href");
-
-
-    fetch(instructorURL)
+    if($(this).next().text()=="Loading..."){
+      var instructorURL = $(this).attr("href");
+      fetch(instructorURL)
       .then(response => response.text())
       .then(responseText => {
         let start = '<span id="oInstructorResults_lblInstructorName">';
@@ -35,6 +35,11 @@ $(document).ready(function(){
         );
 
       })
+      console.log("Fetching!");
+
+    }
+
+    
 
 
 
