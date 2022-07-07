@@ -1,21 +1,24 @@
-//Functional Ver 1
-//Fetch ratings without displaying 
+//Functional Ver 2
+//Fetch ratings with displaying but no hover 
 
 $(document).ready(function(){
 
-  // $(document).one('mouseenter','a.instructorLink',function(){
+  $(document).one('mouseenter','a.instructorLink',function(){
 
-  //   $('a.instructorLink').each(function(index){
-  //     var wrapper = "<b>Loading...</b>";
-  //     $(this).after(wrapper);
-  //   })
+    $('a.instructorLink').each(function(index){
+      var wrapper = "<b style='display:none'>Loading...</b>";
+      $(this).after(wrapper);
+    })
 
-  // })
+  })
 
 
 
 
   $(document).on('mouseenter','a.instructorLink', function(){
+
+    $(this).next().show();
+
     var instructorURL = $(this).attr("href");
 
 
@@ -61,11 +64,11 @@ $(document).ready(function(){
         console.log(jsonResp.avgRating);
         console.log(id);
         
-        $("[href='"+id+"']").after(jsonResp.avgRating+"/5");
+        $("[href='"+id+"']").next().text(jsonResp.avgRating+"/5");
       }
       else{
         console.log("Not a WashU Professor");
-        $("[href='"+id+"']").after("<b>No Rating Found</b>");
+        $("[href='"+id+"']").next().text("No Rating");
       }
 
       
