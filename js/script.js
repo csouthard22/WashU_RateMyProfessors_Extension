@@ -1,5 +1,5 @@
 //Functional Ver 2
-//Fetch ratings with displaying but no hover 
+//Fetch ratings with displaying but no hover  
 
 
 
