@@ -11,7 +11,7 @@ $(document).ready(function () {
   $(document).on('mouseenter', 'a.instructorLink', function () {
       if (!$(this).next().is('b')) {
           console.log("Creat!");
-          var wrapper = "<b class='tooltip' style='display: none;width: auto;background-color: rgb(180, 180, 180);color: #f9f9f9;text-align: center;border-radius: 6px;padding: 5px 0;position: absolute;z-index: 1;'>Loading...</b>";
+          var wrapper = "<b class='tooltip' style='display: none;width: 160px;height: auto;background-color: rgb(180, 180, 180);color: #f9f9f9;text-align: center;border-radius: 6px;padding: 5px 0;position: absolute;z-index: 1;'>Loading...</b>";
           $(this).after(wrapper);
       }
 
@@ -99,20 +99,16 @@ $(document).ready(function () {
           var jsonResp = values[4]
 
           if (jsonResp.school.__ref == "U2Nob29sLTExNDc=") {
-
-
-              $("[href='" + id + "']").next().text("Rating: " + jsonResp.avgRating + "/5");
-              $("[href='" + id + "']").next().append("<p>Would Take Again: " + jsonResp.wouldTakeAgainPercent + "%</p>");
-              $("[href='" + id + "']").next().append("<p>Level of Difficulty: " + jsonResp.avgDifficulty + "</p>");
-              $("[href='" + id + "']").next().append("<a href='https://www.ratemyprofessors.com/ShowRatings.jsp?tid=" + jsonResp.legacyId + "' target='_blank'>Details</a>");
+            
+            $("[href='" + id + "']").next().text("Rating: " + jsonResp.avgRating + "/5");
+            $("[href='" + id + "']").next().append("<p>Would Take Again: " + jsonResp.wouldTakeAgainPercent + "%</p>");
+            $("[href='" + id + "']").next().append("<p>Level of Difficulty: " + jsonResp.avgDifficulty + "</p>");
+            $("[href='" + id + "']").next().append("<a href='https://www.ratemyprofessors.com/ShowRatings.jsp?tid=" + jsonResp.legacyId + "' target='_blank'>Details</a>");
           }
           else {
               console.log("Not a WashU Professor");
               $("[href='" + id + "']").next().text("No Rating");
           }
-
-
-
 
       } catch (error) {
           console.log("Professor No Found");
