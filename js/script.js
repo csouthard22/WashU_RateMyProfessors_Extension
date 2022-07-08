@@ -3,20 +3,35 @@
 
 
 
+
 $(document).ready(function(){
 
 
   //Append rating container for each professor
-  $(document).one('mouseenter','a.instructorLink',function(){
-
-    $('a.instructorLink').each(function(index){
-      var wrapper = "<b style='display:none'>Loading...</b>";
+  $(document).on('mouseenter','a.instructorLink',function(){
+    if(!$(this).next().is('b')){
+      console.log("Creat!");
+      var wrapper = "<b class='tooltip' style='display: none;width: auto;background-color: rgb(180, 180, 180);color: #f9f9f9;text-align: center;border-radius: 6px;padding: 5px 0;position: absolute;z-index: 1;'>Loading...</b>";
       $(this).after(wrapper);
+    }
+
+    // $('a.instructorLink').each(function(index){
+    //   var wrapper = "<b class='tooltip' style='display: none;width: auto;background-color: rgb(180, 180, 180);color: #f9f9f9;text-align: center;border-radius: 6px;padding: 5px 0;position: absolute;z-index: 1;'>Loading...</b>";
+    //   $(this).after(wrapper);
       
-    })
+    // })
 
   })
 
+
+  $(document).on({
+      mouseenter:function(){
+        $(this).show();
+  },
+      mouseleave:function(){
+        $(this).hide();
+      }
+  }, 'b.tooltip')
 
 
   //Show rating container and fetch rating when hover above professor link
@@ -84,10 +99,12 @@ $(document).ready(function(){
       var jsonResp = values[4]
       
       if(jsonResp.school.__ref == "U2Nob29sLTExNDc="){
-        console.log(jsonResp.avgRating);
-        console.log(id);
         
-        $("[href='"+id+"']").next().text(jsonResp.avgRating+"/5");
+        
+        $("[href='"+id+"']").next().text("Rating: " + jsonResp.avgRating+"/5");
+        $("[href='"+id+"']").next().append("<p>Would Take Again: " + jsonResp.wouldTakeAgainPercent + "%</p>");
+        $("[href='"+id+"']").next().append("<p>Level of Difficulty: " + jsonResp.avgDifficulty + "</p>");
+        $("[href='"+id+"']").next().append("<a href='https://www.ratemyprofessors.com/ShowRatings.jsp?tid=" + jsonResp.legacyId +"' target='_blank'>Details</a>");
       }
       else{
         console.log("Not a WashU Professor");
@@ -98,7 +115,8 @@ $(document).ready(function(){
       
 
     } catch (error) {
-      console.log("Error: Rating not found");
+      console.log("Professor No Found");
+        $("[href='"+id+"']").next().text("No Rating");
 
     }
 
