@@ -10,8 +10,8 @@ $(document).ready(function () {
   //Append rating container for each professor
   $(document).on('mouseenter', 'a.instructorLink', function () {
       if (!$(this).next().is('b')) {
-          console.log("Creat!");
-          var wrapper = "<b class='tooltip' style='display: none;width: 160px;height: auto;background-color: rgb(180, 180, 180);color: #f9f9f9;text-align: center;border-radius: 6px;padding: 5px 0;position: absolute;z-index: 1;'>Loading...</b>";
+          console.log("Create!");
+          var wrapper = "<b class='tooltip' style='font-size:15px; display:none; width:160px; height:auto; background-color:#51545c; color:#f9f9f9; text-align:center; border-radius:6px; padding:5px; position:absolute; z-index:1;'>Loading...</b>";
           $(this).after(wrapper);
       }
 
