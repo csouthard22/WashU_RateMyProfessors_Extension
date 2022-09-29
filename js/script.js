@@ -53,9 +53,9 @@ $(document).ready(function () {
                       let name = result.replace(/\s+/g, ' ');
 
                       //send search query link to the background 
-                      var url = "http://www.ratemyprofessors.com/search/teachers?query=" + name + "&sid=U2Nob29sLTExNDc=";
+                      var url = "http://www.ratemyprofessors.com/search/teachers?query=" + name + "&sid=U2Nob29sLTExNDc="; 
                       chrome.runtime.sendMessage(
-                          { from: "tasks", message: url, id: instructorURL }
+                          { from: "tasks", message: url, id: instructorURL, name:name }
                       );
 
                   })
@@ -79,6 +79,7 @@ $(document).ready(function () {
   //Upon message, replace rating contain's text with fetched rating
   chrome.runtime.onMessage.addListener(function (response, sendResponse) {
       var id = response.id;
+      var name = response.name;
 
       //parse and extract professor info from fetched source codes
       let kw = "window.__RELAY_STORE__ = ";
@@ -94,27 +95,70 @@ $(document).ready(function () {
           }
       }
 
-      //Change rating container text to ratings 
-      try {
-          var jsonResp = values[4]
-
+    //Two cases
+      if(keys[1] == "client:root:newSearch"){
+        if(values[2].resultCount==0){
+            $("[href='" + id + "']").next().text("No Result Found.");
+            $("[href='" + id + "']").next().append("<a href='http://www.ratemyprofessors.com/search/teachers?query=" + name + "&sid=U2Nob29sLTExNDc=' target='_blank'>Verify</a>");
+        }
+        else{
+          console.log("Extracting prof legacy id...");
+          jsonResp = values[4];
           if (jsonResp.school.__ref == "U2Nob29sLTExNDc=") {
-            
-            $("[href='" + id + "']").next().text("Rating: " + jsonResp.avgRating + "/5");
-            $("[href='" + id + "']").next().append("<p>Would Take Again: " + jsonResp.wouldTakeAgainPercent + "%</p>");
-            $("[href='" + id + "']").next().append("<p>Level of Difficulty: " + jsonResp.avgDifficulty + "</p>");
-            $("[href='" + id + "']").next().append("<a href='https://www.ratemyprofessors.com/ShowRatings.jsp?tid=" + jsonResp.legacyId + "' target='_blank'>Details</a>");
+              console.log("Found one!");
+              var legacyId = values[4].legacyId;
+              console.log(legacyId);
+              //send prof page link to the background 
+              var url = "http://www.ratemyprofessors.com/ShowRatings.jsp?tid=" + legacyId; 
+              console.log("Sending target URL to Service Worker!" + url);
+              chrome.runtime.sendMessage(
+                  { from: "tasks", message: url, id: id }
+              );
           }
-          else {
-              console.log("Not a WashU Professor");
-              $("[href='" + id + "']").next().text("No Rating");
-          }
-
-      } catch (error) {
-          console.log("Professor No Found");
-          $("[href='" + id + "']").next().text("No Rating");
-
+              else{
+                $("[href='" + id + "']").next().text("No WashU Professor Found.");
+                $("[href='" + id + "']").next().append("<a href='http://www.ratemyprofessors.com/search/teachers?query=" + name + "&sid=U2Nob29sLTExNDc=' target='_blank'>Verify</a>");
+              }
+        }
+        
       }
+      else{
+        try {
+          var jsonResp = values[1];
+
+          if(jsonResp.avgRating==0){
+            $("[href='" + id + "']").next().text("No Rating");
+          }
+          else{
+            $("[href='" + id + "']").next().text("Rating: " + jsonResp.avgRating + "/5");
+          }
+          
+          if(jsonResp.wouldTakeAgainPercent == -1){
+            $("[href='" + id + "']").next().append("<p>No Response</p>");
+          }
+          else{
+            $("[href='" + id + "']").next().append("<p>Would Take Again: " + jsonResp.wouldTakeAgainPercent + "%</p>");
+          }
+
+          if(jsonResp.avgDifficulty==0){
+            $("[href='" + id + "']").next().append("<p>No Response");
+          }
+          else{
+            $("[href='" + id + "']").next().append("<p>Level of Difficulty: " + jsonResp.avgDifficulty + "</p>");
+          }
+
+          $("[href='" + id + "']").next().append("<a href='https://www.ratemyprofessors.com/ShowRatings.jsp?tid=" + jsonResp.legacyId + "' target='_blank'>Details</a>");
+          
+            //   console.log("Not a WashU Professor");
+            //   $("[href='" + id + "']").next().text("No Rating");
+          
+        } catch (error) {
+          $("[href='" + id + "']").next().text("Something went wrong...");
+        }
+      }
+
+      
+      
 
   });
 
@@ -185,4 +229,8 @@ $(document).ready(function () {
 
 
   // //END OF DOCUMENT
+
+
+  //https://www.ratemyprofessors.com/search/teachers?query=Jonathan%20Shidal%20&sid=U2Nob29sLTExNDc=
+  //https://www.ratemyprofessors.com/search/teachers?query=Jonathan%20Shidal%20&sid=U2Nob29sLTExNDc=
 });
