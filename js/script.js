@@ -1,8 +1,3 @@
-//Functional Ver 2
-//Fetch ratings with displaying but no hover 
-
-
-
 
 $(document).ready(function () {
 
@@ -11,15 +6,9 @@ $(document).ready(function () {
   $(document).on('mouseenter', 'a.instructorLink', function () {
       if (!$(this).next().is('b')) {
           console.log("Create!");
-          var wrapper = "<b class='tooltip' style='font-size:15px; display:none; width:160px; height:auto; background-color:#51545c; color:#f9f9f9; text-align:center; border-radius:6px; padding:5px; position:absolute; z-index:1;'>Loading...</b>";
+          var wrapper = "<b class='tooltip' style='font-size:15px; display:none; width:170px; height:auto; background-color:#d4d7ff; color:#8b0000; text-align:left; border-radius:6px; padding:10px 15px; position:absolute; z-index:1;'><span style='font-weight:normal;'>Loading...</span></b>";
           $(this).after(wrapper);
       }
-
-      // $('a.instructorLink').each(function(index){
-      //   var wrapper = "<b class='tooltip' style='display: none;width: auto;background-color: rgb(180, 180, 180);color: #f9f9f9;text-align: center;border-radius: 6px;padding: 5px 0;position: absolute;z-index: 1;'>Loading...</b>";
-      //   $(this).after(wrapper);
-
-      // })
 
   })
 
@@ -98,8 +87,8 @@ $(document).ready(function () {
     //Two cases
       if(keys[1] == "client:root:newSearch"){
         if(values[2].resultCount==0){
-            $("[href='" + id + "']").next().text("No Result Found.");
-            $("[href='" + id + "']").next().append("<a href='http://www.ratemyprofessors.com/search/teachers?query=" + name + "&sid=U2Nob29sLTExNDc=' target='_blank'>Verify</a>");
+            $("[href='" + id + "']").next().html("<span style='display: inline-block; margin-left: 35px; font-weight:normal'>No Result Found</span><br/>");
+            $("[href='" + id + "']").next().append("<span style='margin-top:10px; display: inline-block; margin-left: 64px;'><a style='text-decoration: underline;' href='http://www.ratemyprofessors.com/search/teachers?query=" + name + "&sid=U2Nob29sLTExNDc=' target='_blank'>Verify</a>");
         }
         else{
           console.log("Extracting prof legacy id...");
@@ -116,8 +105,8 @@ $(document).ready(function () {
               );
           }
               else{
-                $("[href='" + id + "']").next().text("No WashU Professor Found.");
-                $("[href='" + id + "']").next().append("<a href='http://www.ratemyprofessors.com/search/teachers?query=" + name + "&sid=U2Nob29sLTExNDc=' target='_blank'>Verify</a>");
+                $("[href='" + id + "']").next().html("<span style='font-weight:normal;'>No WashU Professor Found</span><br/>");
+                $("[href='" + id + "']").next().append("<span style='margin-top:10px; display: inline-block; margin-left: 64px;'><a style='text-decoration: underline;' href='http://www.ratemyprofessors.com/search/teachers?query=" + name + "&sid=U2Nob29sLTExNDc=' target='_blank'>Verify</a><span>");
               }
         }
         
@@ -127,30 +116,29 @@ $(document).ready(function () {
           var jsonResp = values[1];
 
           if(jsonResp.avgRating==0){
-            $("[href='" + id + "']").next().text("No Rating");
+            $("[href='" + id + "']").next().html("<span style='font-weight:normal'>No Rating</span><br/>");
           }
           else{
-            $("[href='" + id + "']").next().text("Rating: " + jsonResp.avgRating + "/5");
+            $("[href='" + id + "']").next().html("<span style='font-weight:normal'>Rating: </span>" + jsonResp.avgRating + "/5<br/>");
           }
           
           if(jsonResp.wouldTakeAgainPercent == -1){
-            $("[href='" + id + "']").next().append("<p>No Response</p>");
+            $("[href='" + id + "']").next().append("<span style='font-weight:normal'>No Response</span><br/>");
           }
           else{
-            $("[href='" + id + "']").next().append("<p>Would Take Again: " + jsonResp.wouldTakeAgainPercent + "%</p>");
+            $("[href='" + id + "']").next().append("<span style='font-weight:normal'>Would Take Again: </span>" + Math.ceil(jsonResp.wouldTakeAgainPercent) + "%<br/>");
           }
 
           if(jsonResp.avgDifficulty==0){
-            $("[href='" + id + "']").next().append("<p>No Response");
+            $("[href='" + id + "']").next().append("<span style='font-weight:normal'>No Response</span><br/>");
           }
           else{
-            $("[href='" + id + "']").next().append("<p>Level of Difficulty: " + jsonResp.avgDifficulty + "</p>");
+            $("[href='" + id + "']").next().append("<span style='font-weight:normal'>Level of Difficulty: </span>" + jsonResp.avgDifficulty+"/5<br/>");
           }
 
-          $("[href='" + id + "']").next().append("<a href='https://www.ratemyprofessors.com/ShowRatings.jsp?tid=" + jsonResp.legacyId + "' target='_blank'>Details</a>");
+          $("[href='" + id + "']").next().append("<span style='margin-top:10px; display: inline-block; margin-left: 57px;'><a style='text-decoration: underline;' href='https://www.ratemyprofessors.com/ShowRatings.jsp?tid=" + jsonResp.legacyId + "' target='_blank'>Details</a></span>");
           
-            //   console.log("Not a WashU Professor");
-            //   $("[href='" + id + "']").next().text("No Rating");
+        
           
         } catch (error) {
           $("[href='" + id + "']").next().text("Something went wrong...");
@@ -162,75 +150,4 @@ $(document).ready(function () {
 
   });
 
-  // //WUSTL data
-  // var professorFullName = $("#oInstructorResults_lblInstructorName").text().trim().replace(/\s+/g, ' ');
-  // var professorTableCellCopy = $("#oInstructorResults_divSingleInstructor > div:nth-child(2) > div:nth-child(1) > div:nth-child(2) > div > div > div:nth-child(2)");
-  // var clone = professorTableCellCopy.clone()
-  // clone.css({"padding-left": "15px"})
-
-  // clone.find('span').first().text("Loading rating...")
-  // clone.find('span').eq(1).text("Loading level of difficulty...")
-  // clone.find('div').first().text("Loading would take again rate...")
-  // clone.find('div').first().text("Loading URL")
-
-  // professorTableCellCopy.parent().append(clone)
-
-  // //rate my professor rating value
-  // var scrapeUrl = "http://www.ratemyprofessors.com/search/teachers?query="+professorFullName+"&sid=U2Nob29sLTExNDc="
-
-  // chrome.runtime.sendMessage( //goes to bg_page.js
-  //   {from:"tasks",message:scrapeUrl}
-  // ); 
-
-  // //listen to the message back 
-  // chrome.runtime.onMessage.addListener(function (response, sendResponse) {
-
-  //   let kw = "window.__RELAY_STORE__ = ";
-  //   let result = response.substring(response.indexOf(kw) + kw.length , response.indexOf('window.process = {}') - 1);
-  //   result = result.replace(/;\s*$/, ""); //remove last ;
-  //   var jsonResult = JSON.parse(result)
-  //   console.log(jsonResult)
-  //   var keys = []
-  //   var values = []
-  //   for (var key in jsonResult) {
-  //       if (jsonResult.hasOwnProperty(key)) {
-  //           keys.push(key)
-  //           values.push(jsonResult[key])
-  //       }
-  //   }
-
-  //   try {
-  //     var jsonResp = values[4]
-
-  //     if (jsonResp.school.__ref != "U2Nob29sLTExNDc="){
-  //       clone.find('span').first().text("No rating found.")
-  //     }
-  //     else{
-  //       clone.find('span').first().text("Rating: "+ jsonResp.avgRating + "/5")
-  //       clone.find('span').eq(1).text("Level of difficulty: "+ jsonResp.avgDifficulty)
-  //       clone.find('div').first().text("Would take again: "+jsonResp.wouldTakeAgainPercent)
-  //       var link = '<a href="https://www.ratemyprofessors.com/ShowRatings.jsp?tid=' + jsonResp.legacyId +'"> Go to RMP </a>';
-  //       link = String(link);
-  //       console.log(link);
-  //       clone.find('div').first().html(link);
-
-  //     }
-
-
-  //   } catch (error) {
-  //     clone.find('span').first().text("No rating found.")
-
-  //   }
-
-  // });
-
-
-
-
-
-  // //END OF DOCUMENT
-
-
-  //https://www.ratemyprofessors.com/search/teachers?query=Jonathan%20Shidal%20&sid=U2Nob29sLTExNDc=
-  //https://www.ratemyprofessors.com/search/teachers?query=Jonathan%20Shidal%20&sid=U2Nob29sLTExNDc=
 });
