@@ -1,5 +1,5 @@
 {
-    "name": "WashU RateMyProfessors Extension",
+    "name": "WashU Rate My Professors",
     "description": "Chrome extension to extract data from rate my professor and display it on WashU course listing page",
     "version": "0.01",
     "permissions": [
