@@ -1,7 +1,7 @@
 {
     "name": "WashU Rate My Professors",
-    "description": "Shows Rate My Professors ratings alongside professor's name in WashU course listing page base on mouse hovering. If the selected professor's profile exists, the extension injects a tooltip constaining rating, would-take-again-percentage, difficulty, and a link to the professor's page in RMP website. This extension only works in WashU course listing page and it doesn't require login.",
-    "version": "0.01",
+    "description": "Shows Rate My Professors ratings alongside professor's name in WashU course listing page base on mouse hovering.",
+    "version": "0.0.1",
     "permissions": [
         "tabs",
         "bookmarks"
@@ -14,7 +14,7 @@
         
       ],
     "action": {
-        "default_icon": "128.png",
+        "default_icon": "WashU_RMP.png",
         "default_popup": "popup.html"
     },
     "background": {
@@ -22,10 +22,10 @@
         "type": "module" 
     },
     "icons": {
-         "16": "16.png",
-         "32": "32.png",
-         "48": "48.png",
-         "128": "128.png"
+         "16": "Icon_16.png",
+         "32": "Icon_32.png",
+         "48": "Icon_48.png",
+         "128": "WashU_RMP.png"
     },
     "content_scripts": [
         {
