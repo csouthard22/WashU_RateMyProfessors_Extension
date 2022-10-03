@@ -1,5 +1,5 @@
 {
-    "name": "WashU Rate My Professors",
+    "name": "Rate My WashU Professors",
     "description": "Shows Rate My Professors ratings alongside professor's name in WashU course listing page base on mouse hovering.",
     "version": "0.0.1",
     "permissions": [
@@ -14,7 +14,7 @@
         
       ],
     "action": {
-        "default_icon": "WashU_RMP.png",
+        "default_icon": "Icon_128.png",
         "default_popup": "popup.html"
     },
     "background": {
@@ -22,10 +22,8 @@
         "type": "module" 
     },
     "icons": {
-         "16": "Icon_16.png",
-         "32": "Icon_32.png",
          "48": "Icon_48.png",
-         "128": "WashU_RMP.png"
+         "128": "Icon_128.png"
     },
     "content_scripts": [
         {
