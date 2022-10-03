@@ -4,14 +4,7 @@
     "version": "0.0.1",
     "permissions": [
         
-      ],
-      "host_permissions": [
-        "https://www.ratemyprofessors.com/*",
-        "https://courses.wustl.edu/*",
-        "https://acadinfo.wustl.edu/*",
-        "*://*/*" 
-        
-      ],
+    ],
     "action": {
         "default_icon": "Icon_128.png",
         "default_popup": "popup.html"
@@ -32,8 +25,6 @@
                 "https://courses.wustl.edu/*",
                 "http://courses.wustl.edu/*",
                 "https://acadinfo.wustl.edu/*"
-                
-
             ],
             "js": [
               "js/jquery-3.6.0.min.js",
