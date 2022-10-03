@@ -18,15 +18,12 @@
         {
             "matches": [
                 "https://www.ratemyprofessors.com/*",
-                "http://www.ratemyprofessors.com/*",
                 "https://courses.wustl.edu/*",
-                "http://courses.wustl.edu/*",
                 "https://acadinfo.wustl.edu/*"
             ],
             "js": [
               "js/jquery-3.6.0.min.js",
               "js/script.js"
-
             ],
             "run_at": "document_end"
         }
