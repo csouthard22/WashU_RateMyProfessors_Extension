@@ -3,8 +3,7 @@
     "description": "Shows Rate My Professors ratings alongside professor's name in WashU course listing page base on mouse hovering.",
     "version": "0.0.1",
     "permissions": [
-        "tabs",
-        "bookmarks"
+        
       ],
       "host_permissions": [
         "https://www.ratemyprofessors.com/*",
