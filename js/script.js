@@ -42,7 +42,7 @@ $(document).ready(function () {
                       let name = result.replace(/\s+/g, ' ');
 
                       //send search query link to the background 
-                      var url = "http://www.ratemyprofessors.com/search/teachers?query=" + name + "&sid=U2Nob29sLTExNDc="; 
+                      var url = "https://www.ratemyprofessors.com/search/teachers?query=" + name + "&sid=U2Nob29sLTExNDc="; 
                       chrome.runtime.sendMessage(
                           { from: "tasks", message: url, id: instructorURL, name:name }
                       );
@@ -88,7 +88,7 @@ $(document).ready(function () {
       if(keys[1] == "client:root:newSearch"){
         if(values[2].resultCount==0){
             $("[href='" + id + "']").next().html("<span style='display: inline-block; margin-left: 35px; font-weight:normal'>No Result Found</span><br/>");
-            $("[href='" + id + "']").next().append("<span style='margin-top:10px; display: inline-block; margin-left: 64px;'><a style='text-decoration: underline;' href='http://www.ratemyprofessors.com/search/teachers?query=" + name + "&sid=U2Nob29sLTExNDc=' target='_blank'>Verify</a>");
+            $("[href='" + id + "']").next().append("<span style='margin-top:10px; display: inline-block; margin-left: 64px;'><a style='text-decoration: underline;' href='https://www.ratemyprofessors.com/search/teachers?query=" + name + "&sid=U2Nob29sLTExNDc=' target='_blank'>Verify</a>");
         }
         else{
           console.log("Extracting prof legacy id...");
@@ -98,7 +98,7 @@ $(document).ready(function () {
               var legacyId = values[4].legacyId;
               console.log(legacyId);
               //send prof page link to the background 
-              var url = "http://www.ratemyprofessors.com/ShowRatings.jsp?tid=" + legacyId; 
+              var url = "https://www.ratemyprofessors.com/ShowRatings.jsp?tid=" + legacyId; 
               console.log("Sending target URL to Service Worker!" + url);
               chrome.runtime.sendMessage(
                   { from: "tasks", message: url, id: id }
@@ -106,7 +106,7 @@ $(document).ready(function () {
           }
               else{
                 $("[href='" + id + "']").next().html("<span style='font-weight:normal;'>No WashU Professor Found</span><br/>");
-                $("[href='" + id + "']").next().append("<span style='margin-top:10px; display: inline-block; margin-left: 64px;'><a style='text-decoration: underline;' href='http://www.ratemyprofessors.com/search/teachers?query=" + name + "&sid=U2Nob29sLTExNDc=' target='_blank'>Verify</a><span>");
+                $("[href='" + id + "']").next().append("<span style='margin-top:10px; display: inline-block; margin-left: 64px;'><a style='text-decoration: underline;' href='https://www.ratemyprofessors.com/search/teachers?query=" + name + "&sid=U2Nob29sLTExNDc=' target='_blank'>Verify</a><span>");
               }
         }
         
