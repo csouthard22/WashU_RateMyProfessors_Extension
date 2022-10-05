@@ -1,4 +1,6 @@
-# WashU_RateMyProfessors_Extension
+# WashU_RateMyProfessors_Extension 
+
+Chrome Web Store: https://chrome.google.com/webstore/detail/rate-my-washu-professors/omijlongpolbonkabbfjnddocjcgajoj
 
 Shows Rate My Professors ratings alongside professor's name in WashU course listing page base on mouse hovering. 
 
