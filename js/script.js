@@ -31,7 +31,7 @@ $(document).ready(function () {
           $(this).next().show();
 
           if ($(this).next().text() == "Loading...") {
-
+            $(this).next().text("Loading....");
               //get Professors' full names by fetching their link 
               var instructorURL = $(this).attr("href");
               fetch(instructorURL)
@@ -40,6 +40,12 @@ $(document).ready(function () {
                       let start = '<span id="oInstructorResults_lblInstructorName">';
                       let result = responseText.substring(responseText.indexOf(start) + start.length, responseText.indexOf('</span></strong>') - 1);
                       let name = result.replace(/\s+/g, ' ');
+                      let splitedName = name.split(' ');
+                      console.log(splitedName);
+                      if(splitedName.length==4){
+                        name = splitedName[0]+' '+splitedName[splitedName.length-2]
+                      }
+                      console.log("final search string: "+name);
 
                       //send search query link to the background 
                       var url = "https://www.ratemyprofessors.com/search/teachers?query=" + name + "&sid=U2Nob29sLTExNDc="; 
