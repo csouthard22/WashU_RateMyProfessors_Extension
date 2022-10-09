@@ -50,7 +50,7 @@ $(document).ready(function () {
                       //send search query link to the background 
                       var url = "https://www.ratemyprofessors.com/search/teachers?query=" + name + "&sid=U2Nob29sLTExNDc="; 
                       chrome.runtime.sendMessage(
-                          { from: "tasks", message: url, id: instructorURL, name:name }
+                          { from: "tasks", message: url, id: instructorURL, name:name, secondSearch:false }
                       );
 
                   })
@@ -75,6 +75,8 @@ $(document).ready(function () {
   chrome.runtime.onMessage.addListener(function (response, sendResponse) {
       var id = response.id;
       var name = response.name;
+      console.log("Returned full name: "+name);
+      var secondSearch = response.secondSearch
 
       //parse and extract professor info from fetched source codes
       let kw = "window.__RELAY_STORE__ = ";
@@ -90,42 +92,93 @@ $(document).ready(function () {
           }
       }
 
-    //Two cases
+
+      //Two cases
+      //If incoming message is search result
       if(keys[1] == "client:root:newSearch"){
-        if(values[2].resultCount==0){
-            $("[href='" + id + "']").next().html("<span style='display: inline-block; margin-left: 35px; font-weight:normal'>No Result Found</span><br/>");
+
+        //If it's secondary search result
+        if(secondSearch == true){
+          var lastName = response.lastName
+          if(values[2].resultCount==0){
+            console.log("No result found in second search");
+            $("[href='" + id + "']").next().html("<span style='display: inline-block; font-weight:normal'>No Result Found by&nbsp</span><br/>"+name+"<br/>");
             $("[href='" + id + "']").next().append("<span style='margin-top:10px; display: inline-block; margin-left: 64px;'><a style='text-decoration: underline;' href='https://www.ratemyprofessors.com/search/teachers?query=" + name + "&sid=U2Nob29sLTExNDc=' target='_blank'>Verify</a>");
-        }
-        else{
-          console.log("Extracting prof legacy id...");
-          jsonResp = values[4];
-          if (jsonResp.school.__ref == "U2Nob29sLTExNDc=") {
-              console.log("Found one!");
-              var legacyId = values[4].legacyId;
-              console.log(legacyId);
-              //send prof page link to the background 
-              var url = "https://www.ratemyprofessors.com/ShowRatings.jsp?tid=" + legacyId; 
-              console.log("Sending target URL to Service Worker!" + url);
-              chrome.runtime.sendMessage(
-                  { from: "tasks", message: url, id: id }
-              );
           }
-              else{
-                $("[href='" + id + "']").next().html("<span style='font-weight:normal;'>No WashU Professor Found</span><br/>");
-                $("[href='" + id + "']").next().append("<span style='margin-top:10px; display: inline-block; margin-left: 64px;'><a style='text-decoration: underline;' href='https://www.ratemyprofessors.com/search/teachers?query=" + name + "&sid=U2Nob29sLTExNDc=' target='_blank'>Verify</a><span>");
-              }
+          else{
+            jsonResp = values[4];
+            if (jsonResp.school.__ref == "U2Nob29sLTExNDc=") {
+              console.log("Found some results by last name");
+              $("[href='" + id + "']").next().html("<span style='font-weight:normal;'>No WashU professor found by </span>"+name+"<span style='font-weight:normal;'>.<br/> Found results by last name </span>"+lastName+".<br/>");
+              $("[href='" + id + "']").next().append("<span style='margin-top:10px; display: inline-block; margin-left: 42px;'><a style='text-decoration: underline;' href='https://www.ratemyprofessors.com/search/teachers?query=" + lastName + "&sid=U2Nob29sLTExNDc=' target='_blank'>View Results</a><span>"); 
+            }
+            else{
+              console.log("No result found in second search");
+              $("[href='" + id + "']").next().html("<span style='display: inline-block; font-weight:normal'>No Result Found by&nbsp</span><br/>"+name+"<br/>");
+              $("[href='" + id + "']").next().append("<span style='margin-top:10px; display: inline-block; margin-left: 64px;'><a style='text-decoration: underline;' href='https://www.ratemyprofessors.com/search/teachers?query=" + name + "&sid=U2Nob29sLTExNDc=' target='_blank'>Verify</a>");
+            }
+          }
         }
+        //If it's the first search
+        else{
+          //If no prof found by full name, perform secondary search by last name and department
+          if(values[2].resultCount==0){
+            console.log("Perform Search by Last Name");
+            let nameArray = name.split(' ');
+            let lastName = nameArray[nameArray.length-2]
+            console.log("last name search string: "+lastName);
+            var url = "https://www.ratemyprofessors.com/search/teachers?query=" + lastName + "&sid=U2Nob29sLTExNDc="; 
+            chrome.runtime.sendMessage(
+                { from: "tasks", message: url, id: id, name:name, lastName:lastName, secondSearch:true }
+            );
+            $("[href='" + id + "']").next().html("<span style='display: inline-block; margin-left: 25px; font-weight:normal'>No result found by full name. Performing search by last name...</span><br/>");
+          }
+          //If some results found in the first search
+          else{
+            console.log("Extracting prof legacy id...");
+            jsonResp = values[4];
+            //Found a WashU professor!!!
+            if (jsonResp.school.__ref == "U2Nob29sLTExNDc=") {
+                console.log("Found one!");
+                var legacyId = values[4].legacyId;
+                console.log(legacyId);
+                //send prof page link to the background 
+                var url = "https://www.ratemyprofessors.com/professor?tid=" + legacyId; 
+                console.log("Sending target URL to Service Worker!" + url);
+                chrome.runtime.sendMessage(
+                    { from: "tasks", message: url, id: id, name:name }
+                );
+            }
+            //No WashU professor found in the first search, perform search by last name
+            else{
+              console.log("Perform Search by Last Name");
+              let nameArray = name.split(' ');
+              let lastName = nameArray[nameArray.length-2]
+              var url = "https://www.ratemyprofessors.com/search/teachers?query=" + lastName + "&sid=U2Nob29sLTExNDc="; 
+              chrome.runtime.sendMessage(
+                  { from: "tasks", message: url, id: id, name:name, lastName:lastName, secondSearch:true }
+              );
+              $("[href='" + id + "']").next().html("<span style='display: inline-block; margin-left: 25px; font-weight:normal'>No Result Found by Full Name. Performing search by last name...</span><br/>");
+            }
+          }
+        }
+
+        
         
       }
+      //If it gets here, a correct result is found
       else{
         try {
           var jsonResp = values[1];
 
+          $("[href='" + id + "']").next().html("<span>"+jsonResp.firstName+" "+jsonResp.lastName+"</span><br/>");
+          
+
           if(jsonResp.avgRating==0){
-            $("[href='" + id + "']").next().html("<span style='font-weight:normal'>No Rating</span><br/>");
+            $("[href='" + id + "']").next().append("<span style='font-weight:normal'>No Rating</span><br/>");
           }
           else{
-            $("[href='" + id + "']").next().html("<span style='font-weight:normal'>Rating: </span>" + jsonResp.avgRating + "/5<br/>");
+            $("[href='" + id + "']").next().append("<span style='font-weight:normal'>Rating: </span>" + jsonResp.avgRating + "/5<br/>");
           }
           
           if(jsonResp.wouldTakeAgainPercent == -1){
@@ -142,11 +195,12 @@ $(document).ready(function () {
             $("[href='" + id + "']").next().append("<span style='font-weight:normal'>Level of Difficulty: </span>" + jsonResp.avgDifficulty+"/5<br/>");
           }
 
-          $("[href='" + id + "']").next().append("<span style='margin-top:10px; display: inline-block; margin-left: 57px;'><a style='text-decoration: underline;' href='https://www.ratemyprofessors.com/ShowRatings.jsp?tid=" + jsonResp.legacyId + "' target='_blank'>Details</a></span>");
+          $("[href='" + id + "']").next().append("<span style='margin-top:10px; display: inline-block; margin-left: 57px;'><a style='text-decoration: underline;' href='https://www.ratemyprofessors.com/professor?tid=" + jsonResp.legacyId + "' target='_blank'>Details</a></span>");
           
         
           
         } catch (error) {
+          console.log("Error: "+error)
           $("[href='" + id + "']").next().text("Something went wrong...");
         }
       }

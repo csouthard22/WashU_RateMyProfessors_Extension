@@ -1,7 +1,7 @@
 {
     "name": "Rate My WashU Professors",
     "description": "Shows Rate My Professors ratings alongside professor's name in WashU course listing page base on mouse hovering.",
-    "version": "0.0.1",
+    "version": "0.0.3",
     "action": {
         "default_icon": "Icon_128.png",
         "default_popup": "popup.html"
