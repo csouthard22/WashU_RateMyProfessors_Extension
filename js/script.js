@@ -131,7 +131,7 @@ $(document).ready(function () {
             chrome.runtime.sendMessage(
                 { from: "tasks", message: url, id: id, name:name, lastName:lastName, secondSearch:true }
             );
-            $("[href='" + id + "']").next().html("<span style='display: inline-block; margin-left: 25px; font-weight:normal'>No result found by full name. Performing search by last name...</span><br/>");
+            $("[href='" + id + "']").next().html("<span style='display: inline-block; margin-left: 20px; font-weight:normal'>No result found by full name. Performing search by last name...</span><br/>");
           }
           //If some results found in the first search
           else{
@@ -158,7 +158,7 @@ $(document).ready(function () {
               chrome.runtime.sendMessage(
                   { from: "tasks", message: url, id: id, name:name, lastName:lastName, secondSearch:true }
               );
-              $("[href='" + id + "']").next().html("<span style='display: inline-block; margin-left: 25px; font-weight:normal'>No Result Found by Full Name. Performing search by last name...</span><br/>");
+              $("[href='" + id + "']").next().html("<span style='display: inline-block; margin-left: 20px; font-weight:normal'>No Result Found by Full Name. Performing search by last name...</span><br/>");
             }
           }
         }
