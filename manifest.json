@@ -1,7 +1,7 @@
 {
     "name": "Rate My WashU Professors",
-    "description": "Shows Rate My Professors ratings alongside professor's name in WashU course listing page base on mouse hovering.",
-    "version": "0.0.3",
+    "description": "Shows Rate My Professors ratings alongside professor's name in WashU Workday course listing page based on mouse hovering.",
+    "version": "1.0.0",
     "action": {
         "default_icon": "Icon_128.png",
         "default_popup": "popup.html"
@@ -18,8 +18,8 @@
         {
             "matches": [
                 "https://www.ratemyprofessors.com/*",
-                "https://courses.wustl.edu/*",
-                "https://acadinfo.wustl.edu/*"
+                "https://workday.wustl.edu/*",
+                "https://*.myworkday.com/*"
             ],
             "js": [
               "js/jquery-3.6.0.min.js",
